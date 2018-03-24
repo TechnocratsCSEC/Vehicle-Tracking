@@ -1,0 +1,9 @@
+<header>
+ 		<nav class="navbar navbar-default">
+			<a href="#" class="navbar-brand">TRACKING SYSTEM</a>
+			<ul class="nav navbar-nav navbar-right">
+				<li><a href="login.do">Login</a></li>
+				<li style="padding-right:40px"><a href="register">Register</a></li>
+			</ul>
+		</nav>
+ </header>
