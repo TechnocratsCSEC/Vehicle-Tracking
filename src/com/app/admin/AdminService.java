@@ -49,7 +49,7 @@ public class AdminService {
 		Admin t1 = null;
 		
 		for(Admin t : users) { 
-			   if(t.getUserID() == user_id) { 
+			   if(t.getUser() == user_id) { 
 				 t1=t;  
 			   }
 			}

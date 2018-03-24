@@ -50,11 +50,9 @@ public class VehicleServlet extends HttpServlet {
 		System.out.println(v.getDest());
 		String src = v.getSource();
 		String dest = v.getDest();
-		request.setAttribute("from-input", src);
-		request.setAttribute("to-input", dest);
+		request.setAttribute("frominput", src);
+		request.setAttribute("toinput", dest);
 		//request.setAttribute("hello", v);
-
-		
 		request.getRequestDispatcher("view/vehicle_track.jsp").forward(request, response);	
 		
 	}

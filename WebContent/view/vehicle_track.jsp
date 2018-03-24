@@ -55,10 +55,10 @@ body {
   <ul>
     <li class="dir-label">From: 
     </li>
-    <li><input name="src" type=text value="${from-input}"></li>
+    <li><input name="src" type=text value="${frominput}"></li>
     <br clear="both"/>
     <li class="dir-label">To:</li>
-    <li><input name="dest" type=text value="${to-input}"/></li>
+    <li><input name="dest" type=text value="${toinput}"/></li>
   </ul>
   <div>
     <select onchange="Demo.getDirections();" id="travel-mode-input">
@@ -81,8 +81,8 @@ var Demo = {
   // HTML Nodes
   mapContainer: document.getElementById('map-container'),
   dirContainer: document.getElementById('dir-container'),
-  fromInput: document.getElementById('from-input'),
-  toInput: document.getElementById('to-input'),
+  fromInput: document.getElementById('frominput'),
+  toInput: document.getElementById('toinput'),
   travelModeInput: document.getElementById('travel-mode-input'),
   unitInput: document.getElementById('unit-input'),
   // API Objects
