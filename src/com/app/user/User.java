@@ -1,10 +1,11 @@
 package com.app.user;
 
 public class User {
+	
+	private int user_id;
 	private String username;
 	private String fullname;
 	private String email;
-	private int user_id;
 	
 	public String getUsername() {
 		return username;

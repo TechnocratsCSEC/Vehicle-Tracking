@@ -4,7 +4,18 @@ public class Admin {
 
 		private String uname;
 		private String fname;
-		private int user;
+		private int user_id;
+
+		
+		
+		public int getUser_id() {
+			return user_id;
+		}
+
+		public void setUser_id(int user_id) {
+			this.user_id = user_id;
+		}
+
 		
 		public String getUname() {
 			return uname;
@@ -32,14 +43,7 @@ public class Admin {
 			this.fname = fname;
 		}
 
-		public int getUser() {
-			return user;
-		}
-
-		public void setUser(int user) {
-			this.user = user;
-		}
-
+		
 			
 
 }

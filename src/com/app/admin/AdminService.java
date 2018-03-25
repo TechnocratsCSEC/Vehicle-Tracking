@@ -27,7 +27,7 @@ public class AdminService {
 					while (rs.next()) {
 						Admin t=new Admin();
 						System.out.println(rs.getInt("user_id"));
-						t.setUser(rs.getInt("user_id"));
+						t.setUser_id(rs.getInt("user_id"));
 						t.setUname(rs.getString("uname"));
 						t.setFname(rs.getString("fname"));
 			            users.add(t);
@@ -49,7 +49,7 @@ public class AdminService {
 		Admin t1 = null;
 		
 		for(Admin t : users) { 
-			   if(t.getUser() == user_id) { 
+			   if(t.getUser_id() == user_id) { 
 				 t1=t;  
 			   }
 			}
