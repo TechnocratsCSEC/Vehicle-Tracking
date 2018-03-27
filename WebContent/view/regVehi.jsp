@@ -2,23 +2,18 @@
 <%@include file="/common/admin_header.jspf"%>
 
 <div class="container">
-	<H3 align="center" style="padding-top: 30px">Registered User List</H3>
+	<H3 align="center" style="padding-top: 30px">Registered Vehicle List</H3>
 	
 	<table class="table table-striped" style="padding-top: 40px">
 		<thead>
-			<th>User ID</th>
-			<th>Username</th>
-			<th>Full name</th>
-			<th>Remove User</th>
+			<th>Vehicle Number</th>
+			<th>Description</th>
 		</thead> 
 		<tbody>
-			<c:forEach items="${users}" var="u">
+			<c:forEach items="${vehicles}" var="u">
 				<tr>
-					<td>${u.user_id}</td>
-					<td>${u.uname}</td>
-					<td>${u.fname}</td>
-					<td>&nbsp;&nbsp;<a class="btn btn-danger"
-						href="deleteUser.do?todo_id=${u.user_id}">Delete</a></td>
+					<td>${u.vehicleNo}</td>
+					<td>${u.vehicleDesc}</td>
 				</tr>
 			</c:forEach>
 		</tbody>

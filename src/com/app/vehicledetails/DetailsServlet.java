@@ -1,10 +1,8 @@
-package com.app.tracking;
+package com.app.vehicledetails;
 
 import java.io.IOException;
 import java.sql.Connection;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 
 import javax.annotation.Resource;
 import javax.servlet.ServletException;
@@ -15,31 +13,25 @@ import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 
 import com.app.user.User;
-import com.app.tracking.*;
 
 /**
- * Servlet implementation class Tracking
+ * Servlet implementation class DetailsServlet
  */
-@WebServlet("/tracking.do")
-public class TrackingServlet extends HttpServlet {
+@WebServlet("/details.do")
+public class DetailsServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	TrackingService ts = new TrackingService();
-       
+	
 	@Resource(name = "jdbc/technocrat")
     private DataSource ds;
 	Connection conn;
 	User user = new User();
-
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		request.getRequestDispatcher("view/tracking.jsp").forward(request, response);
-	}
-	
+	DetailsService ts = new DetailsService();
+	Details vd = new Details();
+	 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		System.out.println("track serv");
 		String uname = (String) request.getSession().getAttribute("name");
 		System.out.println(uname);
-		String source = request.getParameter("source");
-		String dest = request.getParameter("dest");
 		try{
 			conn = ds.getConnection();
 		}
@@ -47,14 +39,12 @@ public class TrackingServlet extends HttpServlet {
 			log(e.getMessage(), e);
 		}
 		String vehicleno = request.getParameter("vehicle");
-		boolean vehicle = ts.vehicleDetails(uname, vehicleno, conn);
-		if(vehicle) {
-			request.setAttribute("desc", vehicle);
-		}
-		boolean isStored=ts.storeVehicle(uname,source,dest,conn);
-		if(isStored){
-			response.sendRedirect("vehicle.do");	
-		}
+		System.out.println(vehicleno);
+		Details d = ts.vehicleDetails(uname, vehicleno, conn);
+		String desc = d.getVehicleDesc();
+		request.setAttribute("vehi", vehicleno);
+		request.setAttribute("desc", desc);
+		request.getRequestDispatcher("view/tracking.jsp").forward(request, response);		
 	}
 
 }

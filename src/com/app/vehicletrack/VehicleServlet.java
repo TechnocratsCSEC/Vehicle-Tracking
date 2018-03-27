@@ -2,9 +2,7 @@ package com.app.vehicletrack;
 
 import java.io.IOException;
 import java.sql.Connection;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 
 import javax.annotation.Resource;
@@ -36,7 +34,7 @@ public class VehicleServlet extends HttpServlet {
 		// TODO Auto-generated method stub
 		System.out.println("vehicle");
 	
-		String uname = user.getUsername();
+		String uname = (String) request.getSession().getAttribute("name");;
 		veh.setUsername(uname);
 		System.out.println(uname);
 		try{
@@ -50,8 +48,8 @@ public class VehicleServlet extends HttpServlet {
 		System.out.println(v.getDest());
 		String src = v.getSource();
 		String dest = v.getDest();
-		request.setAttribute("from-input", src);
-		request.setAttribute("to-input", dest);
+		request.setAttribute("frominput", src);
+		request.setAttribute("toinput", dest);
 		//request.setAttribute("hello", v);
 
 		

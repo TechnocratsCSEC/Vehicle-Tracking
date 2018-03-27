@@ -28,20 +28,19 @@
       	</div>
     </form>
     
-    <form action="regVehicle.do" method="post" class="form-signin" style="padding-bottom: 5px">
+    <form action="regVehicle.do" method="get" class="form-signin" style="padding-bottom: 5px">
       	<div class="form-group">
-	      <button type="button" class="btn btn-dark">Registered Vehicles</button>
+	      <button type="submit" class="btn btn-dark">Registered Vehicles</button>
     	</div>
     </form>
     
-    <form action="issues.do" method="post" class="form-signin" style="padding-bottom: 5px">
+    <form action="report.do" method="post" class="form-signin" style="padding-bottom: 5px">
     	<div class="form-group">
-      		<button type="button" class="btn btn-dark">List Issues</button>
+      		<button type="submit" class="btn btn-dark">Generate Report</button>
      	</div>
     </form>
 </div>
 
  
 <!-- <%@include file="/common/footer.jspf" %> -->
-
 

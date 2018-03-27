@@ -12,25 +12,38 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-
 /**
- * Servlet implementation class TodoList
+ * Servlet implementation class RegVehicleServ
  */
-@WebServlet("/admin.do")
-public class AdminServlet extends HttpServlet {
+@WebServlet("/regVehicle.do")
+public class RegVehicleServ extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	static final Logger LOG = LoggerFactory.getLogger(AdminServlet.class);
-
-	
 	@Resource(name = "jdbc/technocrat")
     private DataSource ds;
 	Connection conn;
-	       
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		request.getRequestDispatcher("view/admin.jsp").forward(request, response);
-	}
 
+	private AdminService todoService = new AdminService();
+	
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		try
+		{
+			conn = ds.getConnection();
+			request.setAttribute("vehicles", todoService.retrieveVehicles(conn));
+			request.getRequestDispatcher("view/regVehi.jsp").forward(request, response);
+
+		}
+		catch(SQLException e)
+		{
+			log(e.getMessage(), e);
+		}
+		finally
+		{
+			try {
+				conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		
+	}
 }

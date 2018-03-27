@@ -1,148 +1,63 @@
-<%@ page language ="java" contentType="text/html; charset=UTF-8"
-pageEncoding="UTF-8"%>
 <html>
-<head>
-<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
-<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false&amp;key=AIzaSyCHhAxEqUUzSdNMb8SZibp-G0WlZvrdr_g"></script>
-</head>
-<body>
+  <head>
+  <!-- Required meta tags -->
+    <meta charset="utf-8">
+    
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+	
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no"/>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
+    <title>Vehicle Live Movement on Maps</title>
+    <link rel="stylesheet" type="text/css" href="view/style.css">
+    <script type="text/javascript"
+    src="http://maps.google.com/maps/api/js?key=AIzaSyB-cDdpv_CCY8Yk1dS2FpL_-MaUTfk0Jes&sensor=false"></script>
+    <script type ="text/javascript" src="http://www.geocodezip.com/scripts/v3_epoly.js"></script>
+    <script type="text/javascript" src="view/script.js"></script>
+  </head>
+  <body onload="initialize()">
+  <body>
 
-<style>
-body {
-  font-size: 0.8em;
-}
-#map-container, #side-container, #side-container li {
-  float: left;
-}
-#map-container {
-  width: 500px;
-  height: 600px;
-}
-#side-container {
-  border: 1px solid #bbb;
-  margin-right: 5px;
-  padding: 2px 4px;
-  text-align: right;
-  width: 260px;
-}
-#side-container ul {
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-}
-#side-container li input {
-  font-size: 0.85em;
-  width: 210px;
-}
-#side-container .dir-label {
-  font-weight: bold;
-  padding-right: 3px;
-  text-align: right;
-  width: 40px;
-}
-#dir-container {
-  height: 525px;
-  overflow: auto;
-  padding: 2px 4px 2px 0;
-}
-#dir-container table {
-  font-size: 1em;
-  width: 100%;
-}
-</style>
+	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 
-<div id="side-container">
-  <ul>
-    <li class="dir-label">From: 
-    </li>
-    <li><input name="src" type=text value="${from-input}"></li>
-    <br clear="both"/>
-    <li class="dir-label">To:</li>
-    <li><input name="dest" type=text value="${to-input}"/></li>
-  </ul>
-  <div>
-    <select onchange="Demo.getDirections();" id="travel-mode-input">
-      <option value="driving" selected="selected">By car</option>
-      <option value="bicycling">Bicycling</option>
-      <option value="walking">Walking</option>
-    </select>
-    <select onchange="Demo.getDirections();" id="unit-input">
-      <option value="imperial" selected="selected">Imperial</option>
-      <option value="metric">Metric</option>
-    </select>
-    <input onclick="Demo.getDirections();" type=button value="Go!"/>
-  </div>
-  <div id="dir-container"></div>
-</div>
-<div id="map-container"></div>
-
-<script type="text/javascript">
-var Demo = {
-  // HTML Nodes
-  mapContainer: document.getElementById('map-container'),
-  dirContainer: document.getElementById('dir-container'),
-  fromInput: document.getElementById('from-input'),
-  toInput: document.getElementById('to-input'),
-  travelModeInput: document.getElementById('travel-mode-input'),
-  unitInput: document.getElementById('unit-input'),
-  // API Objects
-  dirService: new google.maps.DirectionsService(),
-  dirRenderer: new google.maps.DirectionsRenderer(),
-  map: null,
-  showDirections: function(dirResult, dirStatus) {
-    if (dirStatus != google.maps.DirectionsStatus.OK) {
-      alert('Directions failed: ' + dirStatus);
-      return;
-    }
-    // Show directions
-    Demo.dirRenderer.setMap(Demo.map);
-    Demo.dirRenderer.setPanel(Demo.dirContainer);
-    Demo.dirRenderer.setDirections(dirResult);
-  },
-  getSelectedTravelMode: function() {
-    var value =
-        Demo.travelModeInput.options[Demo.travelModeInput.selectedIndex].value;
-    if (value == 'driving') {
-      value = google.maps.DirectionsTravelMode.DRIVING;
-    } else if (value == 'bicycling') {
-      value = google.maps.DirectionsTravelMode.BICYCLING;
-    } else if (value == 'walking') {
-      value = google.maps.DirectionsTravelMode.WALKING;
-    } else {
-      alert('Unsupported travel mode.');
-    }
-    return value;
-  },
-  getSelectedUnitSystem: function() {
-    return Demo.unitInput.options[Demo.unitInput.selectedIndex].value == 'metric' ?
-        google.maps.DirectionsUnitSystem.METRIC :
-        google.maps.DirectionsUnitSystem.IMPERIAL;
-  },
-  getDirections: function() {
-    var fromStr = Demo.fromInput.value;
-    var toStr = Demo.toInput.value;
-    var dirRequest = {
-      origin: fromStr,
-      destination: toStr,
-      travelMode: Demo.getSelectedTravelMode(),
-      unitSystem: Demo.getSelectedUnitSystem(),
-      provideRouteAlternatives: true
-    };
-    Demo.dirService.route(dirRequest, Demo.showDirections);
-  },
-  init: function() {
-    var latLng = new google.maps.LatLng(37.77493, -122.419415);
-    Demo.map = new google.maps.Map(Demo.mapContainer, {
-      zoom: 13,
-      center: latLng,
-      mapTypeId: google.maps.MapTypeId.ROADMAP
-    });
-    // Show directions onload
-    Demo.getDirections();
-  }
-};
-// Onload handler to fire off the app.
-google.maps.event.addDomListener(window, 'load', Demo.init);
-</script>
-</body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+  		<a class="navbar-brand" href="#">TRACKING SYSTEM</a>
+  		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    		<span class="navbar-toggler-icon"></span>
+  		</button>
+  
+  		<div class="collapse navbar-collapse" id="navbarNav">
+    		<ul class="navbar-nav">
+      			<li class="nav-item active">
+        			<a class="nav-link" href="#">Welcome<span class="sr-only">(current)</span></a>
+      			</li>
+      
+      			<li class="nav-item">
+        			<a class="nav-link" href="tracking.do">Track Vehicle</a>
+      			</li>
+      
+      			<li class="nav-item">
+        			<a class="nav-link" href="profile.do">Profile</a>
+      			</li>
+      			
+      			<li class="nav-item">
+      				<a class="nav-link" href="#">Hi, ${name}</a>
+      			</li>
+      			
+				<li class="nav-item">
+        			<a class="nav-link" href="logout.do">Logout</a>
+      			</li>
+      		</ul>
+  		</div>
+	</nav>
+	
+    <div id="tools" style="padding-left: 20px; padding-top:30px">                	
+      <p>Source: <input id="start" value="${ frominput }" /></p>
+      <p>Destination: <input id="end" value="${ toinput }" /></p>
+      <div id="error-msg"></div>
+      <button id="start-btn" onclick="setRoutes();">Start</button>
+    </div>
+    <div id="map_canvas" style="width:100%;height:100%;"></div>
+  </body>
 </html>
